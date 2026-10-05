@@ -1,0 +1,24 @@
+body {
+    background-color: #e5e3e3;
+}
+
+.navbar-brand {
+    text-transform: uppercase;
+}
+
+.spanfa {
+    padding-right: 6px;
+}
+
+@media (max-width: 1199px) {
+    .edit-btn {
+        margin-bottom: 6px;
+    }
+}
+
+.form-control:focus,
+.form-select:focus {
+    border: 1px solid orangered;
+    box-shadow: 0 0 0 3px rgba(255, 0, 60, 0.25);
+
+}
