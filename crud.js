@@ -14,8 +14,6 @@ let emailError = document.querySelector("#emailError");
 let mobileError = document.querySelector("#mobileError");
 let roleError = document.querySelector("#roleError");
 
-
-
 // Form submit
 userForm.addEventListener("submit", function (event) {
     event.preventDefault();

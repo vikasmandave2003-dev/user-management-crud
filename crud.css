@@ -4,7 +4,7 @@
 
 body {
     margin: 0;
-    background: #f1f5f9;
+    background: #f3f7fc;
     color: #1e293b;
     font-family: Arial, sans-serif;
     position: relative;
@@ -191,7 +191,7 @@ h2::after {
     border-radius: 6px;
     padding: 6px 12px;
     transition: 0.2s;
-    margin-bottom: 10px; 
+    margin-bottom: 10px;
 }
 
 .edit-btn:hover,
@@ -398,6 +398,16 @@ h2::after {
     background: #2DD4BF;
     bottom: -80px;
     left: 40%;
+    animation-delay: 6s;
+    border-radius: 50%;
+}
+
+.blob-3 {
+    width: 150px;
+    height: 150px;
+    background: #49f1db;
+    bottom: -80px;
+    left: 20%;
     animation-delay: 6s;
     border-radius: 50%;
 }
