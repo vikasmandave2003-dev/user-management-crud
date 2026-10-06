@@ -402,16 +402,6 @@ h2::after {
     border-radius: 50%;
 }
 
-.blob-4 {
-    width: 150px;
-    height: 150px;
-    background: #fe81ad;
-    bottom: -70px;
-    left: 10%;
-    animation-delay: 6s;
-    border-radius: 50%;
-}
-
 @keyframes blobMove {
     0% {
         transform: translate(0, 0) scale(1);
