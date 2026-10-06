@@ -12,6 +12,7 @@
 - Pagination
 - Select All
 - Delete Selected
+- Audit
 - Form Validation
 - LocalStorage Persistence
 - Responsive Design
