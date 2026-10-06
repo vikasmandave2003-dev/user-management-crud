@@ -99,7 +99,10 @@ userForm.addEventListener("submit", function (event) {
                     email: emailValue,
                     mobile: mobileValue,
                     role: roleValue,
-                    status: status.checked
+                    status: status.checked,
+
+                    editedBy: "Admin",
+                    editedDate: new Date().toISOString()
                 };
             }
             return user;
@@ -112,6 +115,8 @@ userForm.addEventListener("submit", function (event) {
     }
     else {
         //create-new user
+        let currentTime = new Date().toISOString();
+
         let newUser = {
             id: Date.now(),
             fullName: nameValue,
@@ -119,10 +124,13 @@ userForm.addEventListener("submit", function (event) {
             mobile: mobileValue,
             role: roleValue,
             status: status.checked,
-            createdDate: new Date().toLocaleDateString()
 
+            createdBy: "Admin",
+            createdDate: currentTime,
+
+            editedBy: null,
+            editedDate: null
         };
-
         users.push(newUser);
 
         localStorage.setItem("users", JSON.stringify(users));
@@ -158,7 +166,7 @@ function displayUsers() {
     // Add date to old users
     users.forEach(function (user) {
         if (!user.createdDate) {
-            user.createdDate = new Date().toLocaleDateString();
+            user.createdDate = new Date().toISOString();
         }
     });
 
@@ -222,7 +230,7 @@ function displayUsers() {
     userTableBody.innerHTML = "";
 
     if (users.length === 0) {
-        userTableBody.innerHTML = `<tr> <td colspan="9" class="text-center"> No users found </td> </tr>`;
+        userTableBody.innerHTML = `<tr> <td colspan="10" class="text-center"> No users found </td> </tr>`;
         return;
     }
 
@@ -240,7 +248,34 @@ function displayUsers() {
                 : '<span class="badge bg-secondary">Inactive</span>'
             } 
         </td>
-        <td>${new Date(user.createdDate).toLocaleDateString("en-IN")}</td>
+        <td>${new Date(user.createdDate).toLocaleString("en-IN")}</td>
+       <td>
+    <small>
+        <strong>Created By:</strong> ${user.createdBy || "Admin"}
+    </small>
+    <br>
+
+    <small>
+        <strong>Created:</strong>
+        ${new Date(user.createdDate).toLocaleString("en-IN")}
+    </small>
+
+    <br><br>
+
+    <small>
+        <strong>Edited By:</strong>
+        ${user.editedBy || "Not edited"}
+    </small>
+
+    ${user.editedDate
+                ? `<br>
+               <small>
+                   <strong>Edited:</strong>
+                   ${new Date(user.editedDate).toLocaleString("en-IN")}
+               </small>`
+                : ""
+            }
+</td>
         <td>
             <input type="checkbox" class="user-checkbox" data-id="${user.id}">
         </td>
@@ -470,5 +505,213 @@ sortFilter.addEventListener("change", function () {
     displayUsers();
 });
 
+// Bulk Edit
+let bulkEdit = document.querySelector("#bulkEdit");
+let bulkEditTableBody = document.querySelector("#bulkEditTableBody");
+let saveBulkEdit = document.querySelector("#saveBulkEdit");
+
+bulkEdit.addEventListener("click", function () {
+    let checkboxes = document.querySelectorAll(".user-checkbox:checked");
+
+    if (checkboxes.length === 0) {
+        alert("Please select at least one user.");
+        return;
+    }
+
+    let users = JSON.parse(localStorage.getItem("users")) || [];
+
+    bulkEditTableBody.innerHTML = "";
+    checkboxes.forEach(function (checkbox) {
+        let userId = Number(checkbox.dataset.id);
+        let user = users.find(function (item) {
+            return item.id === userId;
+        });
+
+        if (!user) {
+            return;
+        }
+
+        let row = document.createElement("tr");
+        row.innerHTML = `
+            <td>
+                <input type="text"
+                    class="form-control bulk-name"
+                    data-id="${user.id}"
+                    value="${user.fullName}">
+            </td>
+
+            <td>
+                <input type="email"
+                    class="form-control bulk-email"
+                    data-id="${user.id}"
+                    value="${user.email}">
+            </td>
+
+            <td>
+                <input type="text"
+                    class="form-control bulk-mobile"
+                    data-id="${user.id}"
+                    value="${user.mobile}">
+            </td>
+
+            <td>
+                <select class="form-select bulk-role"
+                    data-id="${user.id}">
+                    <option value="Admin" ${user.role === "Admin" ? "selected" : ""}>
+                        Admin
+                    </option>
+                    <option value="Manager" ${user.role === "Manager" ? "selected" : ""}>
+                        Manager
+                    </option>
+                    <option value="Staff" ${user.role === "Staff" ? "selected" : ""}>
+                        Staff
+                    </option>
+                </select>
+            </td>
+
+            <td>
+                <select class="form-select bulk-status"
+                    data-id="${user.id}">
+                    <option value="true" ${user.status === true ? "selected" : ""}>
+                        Active
+                    </option>
+                    <option value="false" ${user.status === false ? "selected" : ""}>
+                        Inactive
+                    </option>
+                </select>
+            </td>
+        `;
+
+        bulkEditTableBody.appendChild(row);
+    });
+
+    let bulkEditModalElement = document.querySelector("#bulkEditModal");
+    let bulkEditModal = bootstrap.Modal.getOrCreateInstance(
+        bulkEditModalElement
+    );
+    bulkEditModal.show();
+});
+
+
+saveBulkEdit.addEventListener("click", function () {
+    let users = JSON.parse(localStorage.getItem("users")) || [];
+
+    let names = document.querySelectorAll(".bulk-name");
+    let emails = document.querySelectorAll(".bulk-email");
+    let mobiles = document.querySelectorAll(".bulk-mobile");
+    let roles = document.querySelectorAll(".bulk-role");
+    let statuses = document.querySelectorAll(".bulk-status");
+
+    let editedUsers = [];
+
+    for (let i = 0; i < names.length; i++) {
+        let nameValue = names[i].value.trim();
+        let emailValue = emails[i].value.trim();
+        let mobileValue = mobiles[i].value.trim();
+        let roleValue = roles[i].value;
+        let statusValue = statuses[i].value === "true";
+
+        // Full Name validation
+        if (nameValue.length < 3 || nameValue.length > 50) {
+            alert("Full Name must be between 3 and 50 characters.");
+            return;
+        }
+
+        // Email validation
+        let emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        if (!emailPattern.test(emailValue)) {
+            alert("Please enter a valid email address.");
+            return;
+        }
+
+        // Mobile validation
+        let mobilePattern = /^[0-9]{10}$/;
+        if (!mobilePattern.test(mobileValue)) {
+            alert("Mobile must contain exactly 10 digits.");
+            return;
+        }
+
+        if (roleValue === "") {
+            alert("Please select a role.");
+            return;
+        }
+
+        editedUsers.push({
+            id: Number(names[i].dataset.id),
+            fullName: nameValue,
+            email: emailValue.toLowerCase(),
+            mobile: mobileValue,
+            role: roleValue,
+            status: statusValue
+        });
+    }
+
+    // Check duplicate emails
+    let emailList = editedUsers.map(function (user) {
+        return user.email;
+    });
+
+    let duplicateEmail = emailList.some(function (email, index) {
+        return emailList.indexOf(email) !== index;
+    });
+
+    if (duplicateEmail) {
+        alert("Email must be unique for every user.");
+        return;
+    }
+
+    // Check email with other existing users
+    let emailExists = editedUsers.some(function (editedUser) {
+
+        return users.some(function (user) {
+            return user.email.toLowerCase() === editedUser.email &&
+                user.id !== editedUser.id &&
+                !editedUsers.some(function (item) {
+                    return item.id === user.id;
+                });
+        });
+
+    });
+
+    if (emailExists) {
+        alert("One of these emails already exists.");
+        return;
+    }
+
+    // Update users
+    users = users.map(function (user) {
+        let editedUser = editedUsers.find(function (item) {
+            return item.id === user.id;
+        });
+
+        if (!editedUser) {
+            return user;
+        }
+
+        return {
+            ...user,
+            fullName: editedUser.fullName,
+            email: editedUser.email,
+            mobile: editedUser.mobile,
+            role: editedUser.role,
+            status: editedUser.status,
+
+            editedBy: "Admin",
+            editedDate: new Date().toISOString()
+        };
+    });
+
+    localStorage.setItem("users", JSON.stringify(users));
+    showToast("Selected users updated successfully");
+
+    let bulkEditModalElement = document.querySelector("#bulkEditModal");
+    let bulkEditModal = bootstrap.Modal.getInstance(
+        bulkEditModalElement
+    );
+
+    bulkEditModal.hide();
+    selectAll.checked = false;
+    displayUsers();
+});
 
 
