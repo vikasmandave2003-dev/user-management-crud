@@ -405,9 +405,9 @@ h2::after {
 .blob-4 {
     width: 150px;
     height: 150px;
-    background: #49f1db;
-    bottom: -80px;
-    left: 20%;
+    background: #fe81ad;
+    bottom: -70px;
+    left: 10%;
     animation-delay: 6s;
     border-radius: 50%;
 }
