@@ -52,17 +52,16 @@ userForm.addEventListener("submit", function (event) {
     }
 
     //mobile-validation
-    let mobilePattern = /^[0-9]{10}$/;
+    let mobilePattern = /^[6-9][0-9]{9}$/;
 
     if (mobileValue === "") {
         mobileError.innerHTML = "Mobile is required";
         isValid = false;
     }
     else if (!mobilePattern.test(mobileValue)) {
-        mobileError.innerHTML = "Mobile must contain exactly 10 digits";
+        mobileError.innerHTML = "Enter a valid 10-digit mobile number";
         isValid = false;
     }
-
     //role-validation
     if (roleValue === "") {
         roleError.innerHTML = "Please select a role";
@@ -159,7 +158,6 @@ let currentPage = 1;
 let usersPerPage = 5;
 
 function displayUsers() {
-
     let users = JSON.parse(localStorage.getItem("users")) || [];
     // Add date to old users
     users.forEach(function (user) {
@@ -286,6 +284,7 @@ function displayUsers() {
     });
 
     displayPagination(totalPages);
+    updateStats();
 
     // Edit buttons
     let editButtons = document.querySelectorAll(".edit-btn");
@@ -317,8 +316,34 @@ function displayUsers() {
 }
 displayUsers();
 
-// Edit User
+function updateStats() {
+    let users = JSON.parse(localStorage.getItem("users")) || [];
 
+    let totalUsers = users.length;
+
+    // Active users
+    let activeUsers = users.filter(function (user) {
+        return user.status === true;
+    }).length;
+
+    // Inactive users
+    let inactiveUsers = users.filter(function (user) {
+        return user.status === false;
+    }).length;
+
+    // Admin users
+    let adminUsers = users.filter(function (user) {
+        return user.role === "Admin";
+    }).length;
+
+    // Show data in cards
+    document.querySelector("#totalUsers").textContent = totalUsers;
+    document.querySelector("#activeUsers").textContent = activeUsers;
+    document.querySelector("#inactiveUsers").textContent = inactiveUsers;
+    document.querySelector("#adminUsers").textContent = adminUsers;
+}
+
+// Edit User
 function editUser(userId) {
 
     let users = JSON.parse(localStorage.getItem("users")) || [];
