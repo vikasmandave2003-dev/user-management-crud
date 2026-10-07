@@ -75,14 +75,25 @@ userForm.addEventListener("submit", function (event) {
 
 
     let users = JSON.parse(localStorage.getItem("users")) || [];
-
-    //check-duplicate email
+    // check-duplicate email
     let emailExists = users.some(function (user) {
-        return (user.email.toLowerCase() === emailValue.toLowerCase() && user.id !== editUserId);
+        return user.email.toLowerCase() === emailValue.toLowerCase()
+            && user.id !== editUserId;
     });
 
     if (emailExists) {
         emailError.innerHTML = "This email already exists";
+        return;
+    }
+
+    // check-duplicate mobile
+    let mobileExists = users.some(function (user) {
+        return user.mobile === mobileValue
+            && user.id !== editUserId;
+    });
+
+    if (mobileExists) {
+        mobileError.innerHTML = "This mobile number already exists";
         return;
     }
 
@@ -648,9 +659,10 @@ saveBulkEdit.addEventListener("click", function () {
         }
 
         // Mobile validation
-        let mobilePattern = /^[0-9]{10}$/;
+        let mobilePattern = /^[6-9][0-9]{9}$/;
+
         if (!mobilePattern.test(mobileValue)) {
-            alert("Mobile must contain exactly 10 digits.");
+            alert("Enter a valid 10-digit mobile number.");
             return;
         }
 
@@ -698,6 +710,36 @@ saveBulkEdit.addEventListener("click", function () {
 
     if (emailExists) {
         alert("One of these emails already exists.");
+        return;
+    }
+
+    // Check duplicate mobile numbers
+    let mobileList = editedUsers.map(function (user) {
+        return user.mobile;
+    });
+
+    let duplicateMobile = mobileList.some(function (mobile, index) {
+        return mobileList.indexOf(mobile) !== index;
+    });
+
+    if (duplicateMobile) {
+        alert("Mobile number must be unique for every user.");
+        return;
+    }
+
+    // Check mobile with other existing users
+    let mobileExists = editedUsers.some(function (editedUser) {
+        return users.some(function (user) {
+            return user.mobile === editedUser.mobile &&
+                user.id !== editedUser.id &&
+                !editedUsers.some(function (item) {
+                    return item.id === user.id;
+                });
+        });
+    });
+
+    if (mobileExists) {
+        alert("One of these mobile numbers already exists.");
         return;
     }
 

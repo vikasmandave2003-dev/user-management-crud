@@ -122,112 +122,6 @@
                 </div>
             </div>
         </section>
-        <!-- filter card -->
-        <section class="filter-card">
-            <div class="filter-header">
-                <div class="filter-title">
-                    <div class="directory-icon">
-                        <i class="fa-solid fa-sliders"></i>
-                    </div>
-                    <div>
-                        <h4>
-                            User Directory
-                        </h4>
-                        <p>
-                            Search, filter and organize your users
-                        </p>
-                    </div>
-                </div>
-            </div>
-            <!-- Filter Fields -->
-            <div class="filter-grid">
-                <div class="filter-field search-field">
-                    <label for="searchInput">
-                        Search Users
-                    </label>
-                    <div class="input-wrapper">
-                        <i class="fa-solid fa-magnifying-glass"></i>
-                        <input type="text" id="searchInput" class="form-control"
-                            placeholder="Search name, email or mobile">
-                    </div>
-                </div>
-                <div class="filter-field">
-                    <label for="roleFilter">
-                        Role
-                    </label>
-                    <select id="roleFilter" class="form-select">
-                        <option value="">
-                            All Roles
-                        </option>
-                        <option value="Admin">
-                            Admin
-                        </option>
-                        <option value="Manager">
-                            Manager
-                        </option>
-                        <option value="Staff">
-                            Staff
-                        </option>
-                    </select>
-                </div>
-                <div class="filter-field">
-                    <label for="statusFilter">
-                        Status
-                    </label>
-                    <select id="statusFilter" class="form-select">
-                        <option value="">
-                            All Status
-                        </option>
-                        <option value="true">
-                            Active
-                        </option>
-                        <option value="false">
-                            Inactive
-                        </option>
-                    </select>
-                </div>
-                <div class="filter-field">
-                    <label for="sortFilter">
-                        Sort By
-                    </label>
-                    <select id="sortFilter" class="form-select">
-                        <option value="">
-                            Default
-                        </option>
-                        <option value="nameAsc">
-                            Name: A to Z
-                        </option>
-                        <option value="nameDesc">
-                            Name: Z to A
-                        </option>
-                        <option value="dateAsc">
-                            Oldest First
-                        </option>
-                        <option value="dateDesc">
-                            Newest First
-                        </option>
-                    </select>
-                </div>
-            </div>
-            <div class="bulk-action-bar">
-                <div class="bulk-info">
-                    <i class="fa-solid fa-circle-info"></i>
-                    <span>
-                        Select users to perform bulk actions
-                    </span>
-                </div>
-                <div class="bulk-buttons">
-                    <button type="button" id="bulkEdit" class="btn bulk-edit-btn">
-                        <i class="fa-solid fa-pen-to-square"></i>
-                        Bulk Edit
-                    </button>
-                    <button type="button" id="deleteSelected" class="btn bulk-delete-btn">
-                        <i class="fa-solid fa-trash-can"></i>
-                        Delete Selected
-                    </button>
-                </div>
-            </div>
-        </section>
         <!-- user table -->
         <section class="table-card">
             <div class="table-card-header">
@@ -245,6 +139,111 @@
                     Live Data
                 </span>
             </div>
+            <section class="filter-card">
+                <div class="filter-header">
+                    <div class="filter-title">
+                        <div class="directory-icon">
+                            <i class="fa-solid fa-sliders"></i>
+                        </div>
+                        <div>
+                            <h4>
+                                User Directory
+                            </h4>
+                            <p>
+                                Search, filter and organize your users
+                            </p>
+                        </div>
+                    </div>
+                </div>
+                <!-- Filter Fields -->
+                <div class="filter-grid">
+                    <div class="filter-field search-field">
+                        <label for="searchInput">
+                            Search Users
+                        </label>
+                        <div class="input-wrapper">
+                            <i class="fa-solid fa-magnifying-glass"></i>
+                            <input type="text" id="searchInput" class="form-control"
+                                placeholder="Search name, email or mobile">
+                        </div>
+                    </div>
+                    <div class="filter-field">
+                        <label for="roleFilter">
+                            Role
+                        </label>
+                        <select id="roleFilter" class="form-select">
+                            <option value="">
+                                All Roles
+                            </option>
+                            <option value="Admin">
+                                Admin
+                            </option>
+                            <option value="Manager">
+                                Manager
+                            </option>
+                            <option value="Staff">
+                                Staff
+                            </option>
+                        </select>
+                    </div>
+                    <div class="filter-field">
+                        <label for="statusFilter">
+                            Status
+                        </label>
+                        <select id="statusFilter" class="form-select">
+                            <option value="">
+                                All Status
+                            </option>
+                            <option value="true">
+                                Active
+                            </option>
+                            <option value="false">
+                                Inactive
+                            </option>
+                        </select>
+                    </div>
+                    <div class="filter-field">
+                        <label for="sortFilter">
+                            Sort By
+                        </label>
+                        <select id="sortFilter" class="form-select">
+                            <option value="">
+                                Default
+                            </option>
+                            <option value="nameAsc">
+                                Name: A to Z
+                            </option>
+                            <option value="nameDesc">
+                                Name: Z to A
+                            </option>
+                            <option value="dateAsc">
+                                Oldest First
+                            </option>
+                            <option value="dateDesc">
+                                Newest First
+                            </option>
+                        </select>
+                    </div>
+                </div>
+                <div class="bulk-action-bar">
+                    <div class="bulk-info">
+                        <i class="fa-solid fa-circle-info"></i>
+                        <span>
+                            Select users to perform bulk actions
+                        </span>
+                    </div>
+                    <div class="bulk-buttons">
+                        <button type="button" id="bulkEdit" class="btn bulk-edit-btn">
+                            <i class="fa-solid fa-pen-to-square"></i>
+                            Bulk Edit
+                        </button>
+                        <button type="button" id="deleteSelected" class="btn bulk-delete-btn">
+                            <i class="fa-solid fa-trash-can"></i>
+                            Delete Selected
+                        </button>
+                    </div>
+                </div>
+            </section>
             <!-- Table -->
             <div class="table-wrapper">
                 <table class="table user-table">

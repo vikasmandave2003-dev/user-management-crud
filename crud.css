@@ -352,6 +352,7 @@ body {
     box-shadow: var(--sadow-sm);
     margin-bottom: 25px;
     overflow: hidden;
+    margin-top: 5px;
 }
 
 .filter-header {
