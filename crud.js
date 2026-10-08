@@ -244,53 +244,86 @@ function displayUsers() {
     //display every user
     paginatedUsers.forEach(function (user) {
         let row = document.createElement("tr");
+
         row.innerHTML = `
-        <td>${user.id}</td>
-        <td>${user.fullName}</td>       
-        <td>${user.email}</td> 
-        <td>${user.mobile}</td> 
-        <td>${user.role}</td>
-        <td>
-         ${user.status ? '<span class="badge bg-success">Active</span>'
+    <td>${user.id}</td>
+
+    <td>${user.fullName}</td>
+
+    <td>${user.email}</td>
+
+    <td>${user.mobile}</td>
+
+    <td>${user.role}</td>
+
+    <td>
+        ${user.status
+                ? '<span class="badge bg-success">Active</span>'
                 : '<span class="badge bg-secondary">Inactive</span>'
-            } 
-        </td>
-        <td>${new Date(user.createdDate).toLocaleString("en-IN")}</td>
-       <td>
-    <small>
-        <strong>Created By:</strong> ${user.createdBy || "Admin"}
-    </small>
-    <br>
+            }
+    </td>
 
-    <small>
-        <strong>Created:</strong>
+    <td>
         ${new Date(user.createdDate).toLocaleString("en-IN")}
-    </small>
+    </td>
 
-    <br><br>
+    <td>
+        <small>
+            <strong>Created By:</strong>
+            ${user.createdBy || "Admin"}
+        </small>
 
-    <small>
-        <strong>Edited By:</strong>
-        ${user.editedBy || "Not edited"}
-    </small>
+        <br>
 
-    ${user.editedDate
-                ? `<br>
-               <small>
-                   <strong>Edited:</strong>
-                   ${new Date(user.editedDate).toLocaleString("en-IN")}
-               </small>`
+        <small>
+            <strong>Created:</strong>
+            ${new Date(user.createdDate).toLocaleString("en-IN")}
+        </small>
+
+        <br><br>
+
+        <small>
+            <strong>Edited By:</strong>
+            ${user.editedBy || "Not edited"}
+        </small>
+
+        ${user.editedDate
+                ? `
+                <br>
+                <small>
+                    <strong>Edited:</strong>
+                    ${new Date(user.editedDate).toLocaleString("en-IN")}
+                </small>
+              `
                 : ""
             }
+    </td>
+    <td class="text-center">
+        <input
+            type="checkbox"
+            class="user-checkbox"
+            data-id="${user.id}">
+    </td>
+    <td class="user-actions">
+    <div class="user-action-buttons">
+        <button type="button"
+                class="btn btn-sm btn-outline-primary edit-btn"
+                data-id="${user.id}"
+                title="Edit User">
+            <i class="fa-solid fa-pen-to-square"></i>
+            Edit
+        </button>
+        <button type="button"
+                class="btn btn-sm btn-outline-danger delete-btn"
+                data-id="${user.id}"
+                title="Delete User">
+            <i class="fa-solid fa-trash"></i>
+             Delete
+        </button>
+    </div>
 </td>
-        <td>
-            <input type="checkbox" class="user-checkbox" data-id="${user.id}">
-        </td>
-        <td>
-        <button class="btn btn-sm btn-warning edit-btn" data-id="${user.id}"> Edit </button>
-        <button class="btn btn-sm btn-danger delete-btn" data-id="${user.id}"> Delete </button>
-        </td>
-        `;
+`;
+
         userTableBody.appendChild(row);
     });
 
