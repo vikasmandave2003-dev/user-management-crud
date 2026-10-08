@@ -165,6 +165,7 @@ let roleFilter = document.querySelector("#roleFilter");
 let statusFilter = document.querySelector("#statusFilter");
 let sortFilter = document.querySelector("#sortFilter");
 let pagination = document.querySelector("#pagination");
+let paginationLabel = document.querySelector(".pagination-label");
 let currentPage = 1;
 let usersPerPage = 5;
 
@@ -228,18 +229,26 @@ function displayUsers() {
         });
     }
 
-    //pagination
     let totalPages = Math.ceil(users.length / usersPerPage);
+    if (currentPage > totalPages && totalPages > 0) {
+        currentPage = totalPages;
+    }
     let startIndex = (currentPage - 1) * usersPerPage;
     let endIndex = startIndex + usersPerPage;
     let paginatedUsers = users.slice(startIndex, endIndex);
-
     userTableBody.innerHTML = "";
 
     if (users.length === 0) {
-        userTableBody.innerHTML = `<tr> <td colspan="10" class="text-center"> No users found </td> </tr>`;
+        userTableBody.innerHTML = `<tr>
+        <td colspan="10" class="text-center">
+            No users found
+        </td>
+    </tr>`;
+        displayPagination(0);
+        updateStats();
         return;
     }
+
 
     //display every user
     paginatedUsers.forEach(function (user) {
@@ -321,8 +330,8 @@ function displayUsers() {
              Delete
         </button>
     </div>
-</td>
-`;
+    </td>
+    `;
 
         userTableBody.appendChild(row);
     });
@@ -464,8 +473,10 @@ function displayPagination(totalPages) {
     pagination.innerHTML = "";
 
     if (totalPages <= 1) {
+        paginationLabel.style.display = "none";
         return;
     }
+    paginationLabel.style.display = "inline";
 
     // Previous button
     let previousItem = document.createElement("li");
